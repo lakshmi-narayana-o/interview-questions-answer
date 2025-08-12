@@ -80,4 +80,80 @@ function Profile() {
   if (loading) return <p>Loading...</p>;
   return <h1>Welcome, {user.name}</h1>;
 }
+```
+### 2\. Explain the App Router vs. the Pages Router in Next.js. What are the key advantages of the App Router?
 
+#### **Simple Answer**
+
+The **Pages Router** is the original way Next.js handled routing, where every file in the pages directory is a route. The new **App Router** uses folders and special files (like page.js and layout.js) inside an app directory. Its main advantages are **React Server Components**, **layouts that don't re-render**, and better support for streaming and nested routes.
+
+#### **Long Explanation**
+
+The introduction of the App Router in Next.js 13 was a paradigm shift.
+
+*   **Pages Router:**
+    
+    *   **Structure:** A file like pages/about.js creates the /about route. A file like pages/posts/\[id\].js creates dynamic routes like /posts/123.
+        
+    *   **Data Fetching:** Relies on specific functions exported from the page file: getStaticProps (for SSG) and getServerSideProps (for SSR).
+        
+*   **App Router:**
+    
+    *   **Structure:** Routing is now directory-based. The /dashboard route is created by a folder named dashboard containing a page.js file (app/dashboard/page.js). This structure makes it easier to co-locate related files like components, styles, and tests.
+        
+    *   **Special Files:** It uses a convention of special file names:
+        
+        *   page.js: The main UI for a route.
+            
+        *   layout.js: A shared UI that wraps child pages and layouts. **Crucially, layouts preserve state and don't re-render on navigation.**
+            
+        *   loading.js: Automatically creates a loading UI using React Suspense.
+            
+        *   error.js: Automatically creates an error boundary to catch errors.
+            
+    *   **Key Advantages:**
+        
+        1.  **React Server Components (RSC):** By default, all components in the App Router are Server Components. They render only on the server, resulting in zero client-side JavaScript for those parts, which significantly improves performance. You can opt-in to interactivity with Client Components using the "use client" directive.
+            
+        2.  **Shared & Nested Layouts:** You can easily create complex nested layouts that persist across route changes, avoiding unnecessary re-renders and preserving component state (like scroll position or input fields).
+            
+        3.  **Simplified Data Fetching:** Data fetching is now built into the native fetch API, which is automatically deduped and cached. You no longer need getStaticProps or getServerSideProps.
+            
+        4.  **Streaming:** The App Router supports streaming responses with loading.js and React Suspense, allowing you to show parts of the page instantly while the rest of the data is still being fetched. This improves the perceived performance.
+            
+
+#### **Example Code Snippets**
+
+**File Structure Comparison**
+```
+# Pages Router
+pages/
+├── _app.js
+├── index.js
+└── dashboard/
+    └── settings.js   # Corresponds to /dashboard/settings
+
+# App Router
+app/
+├── layout.js         # Root layout
+├── page.js           # Home page
+└── dashboard/
+    ├── layout.js     # Dashboard-specific layout
+    └── settings/
+        └── page.js   # Corresponds to /dashboard/settings
+```
+
+***App Router Layout Example (app/dashboard/layout.js)***
+```js
+// This layout wraps all pages inside the /dashboard route
+export default function DashboardLayout({ children }) {
+  return (
+    <section>
+      {/* Include a shared dashboard sidebar or header here */}
+      <nav>Dashboard Nav</nav>
+      {/* The actual page content will be rendered here */}
+      {children}
+    </section>
+  );
+}
+```
