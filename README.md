@@ -157,3 +157,94 @@ export default function DashboardLayout({ children }) {
   );
 }
 ```
+### 3\. What are Server Components and Client Components? How do you decide which to use?
+
+#### **Simple Answer**
+
+**Server Components** run only on the server. Use them for things that don't need user interaction, like fetching data or displaying static content. **Client Components** run in the browser and allow for interactivity using hooks like useState and useEffect. You mark them with a "use client" directive at the top of the file.
+
+#### **Long Explanation**
+
+This is the core concept of the App Router.
+
+*   **Server Components (RSCs)**
+    
+    *   **The Default:** Every component you create inside the app directory is a Server Component by default.
+        
+    *   **How they work:** They are rendered entirely on the server. Their code is **never** sent to the client's browser. This means they have zero impact on your client-side JavaScript bundle size.
+        
+    *   **Benefits:**
+        
+        *   **Performance:** Smaller JS bundles lead to faster page loads.
+            
+        *   **Direct Backend Access:** They can directly access server-side resources like databases, file systems, or secret API keys without needing to expose an API endpoint.
+            
+    *   **Limitations:** They cannot be interactive. You **cannot** use state (useState), effects (useEffect), or browser-only APIs (window, localStorage).
+        
+*   **Client Components**
+    
+    *   **Opting In:** To make a component a Client Component, you must add the "use client"; directive as the very first line of the file.
+        
+    *   **How they work:** They are pre-rendered on the server for the initial page load (for faster FCP), and then "hydrated" in the browser, where their JavaScript code takes over to make them fully interactive.
+        
+    *   **Benefits:** You can use all the features of traditional React:
+        
+        *   State and Lifecycle hooks (useState, useEffect, useContext).
+            
+        *   Event listeners (onClick, onChange).
+            
+        *   Browser APIs.
+            
+*   **When to Choose Which?**
+    
+    *   **Start with Server Components:** Assume everything should be a Server Component.
+        
+    *   **Switch to Client Components only when needed:** If you need to add a button with an onClick handler, a form with an onChange handler, or manage state with useState, you must use a Client Component.
+        
+    *   **Best Practice:** Keep Client Components as small as possible ("at the leaves" of your component tree). For example, if you have a large page with just one interactive button, make the page a Server Component and extract the button into its own small Client Component.
+        
+
+#### **Example Code Snippets**
+
+**Server Component (app/page.js)**This component fetches data on the server and its code is never sent to the browser.
+```javascript
+// This is a Server Component by default
+async function getPosts() {
+  // This fetch is automatically cached
+  const res = await fetch('https://api.example.com/posts');
+  return res.json();
+}
+
+export default async function HomePage() {
+  const posts = await getPosts();
+
+  return (
+    <main>
+      <h1>My Blog</h1>
+      <ul>
+        {posts.map((post) => (
+          <li key={post.id}>{post.title}</li>
+        ))}
+      </ul>
+    </main>
+  );
+}
+```
+**Client Component (app/components/Counter.js)**
+This component uses state and is interactive, so it must be a Client Component.
+```javascript
+"use client"; // This directive makes it a Client Component
+
+import { useState } from 'react';
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
+}
+```
