@@ -206,7 +206,8 @@ This is the core concept of the App Router.
 
 #### **Example Code Snippets**
 
-**Server Component (app/page.js)**This component fetches data on the server and its code is never sent to the browser.
+**Server Component (app/page.js)**
+* This component fetches data on the server and its code is never sent to the browser.
 ```javascript
 // This is a Server Component by default
 async function getPosts() {
@@ -231,7 +232,7 @@ export default async function HomePage() {
 }
 ```
 **Client Component (app/components/Counter.js)**
-This component uses state and is interactive, so it must be a Client Component.
+* This component uses state and is interactive, so it must be a Client Component.
 ```javascript
 "use client"; // This directive makes it a Client Component
 
