@@ -1,75 +1,74 @@
 
 # this: this keyword is refers to show browser window object and nodejs compiter it show global object. it used for current object as a constructor to assign value of object properies
 ***
-null: Null is used to represent an intentional absence of any object value
-undefined: indicates a variable is declared but not assigned a value
-call, app, bind are methods in javascript that allow to manipulate the THIS keyword within function
-call() method is used to call a function with specified THIS value and arguments in individually
-apply() method is used to similar like call but we need pass arguments in array
-bind() method create new function that want to called for execution we can pass argument type or array
-hoisting: default behavior of moving declarations to the top of the current scope (script or function) during the compilation phase.
-var: var is global scope
-let and const: is function scope in let variable assigned new value but we cannot reassigned same name variable and const is fixed value we cannot reassign value or same variable name but we can modify with non-primitive types like object and array
-function declaration: a function defines a function using the function keyword followed by function\_name, parentheses and curly braces
-function expression: a function defines a function and assigns it to variable is
-closure: A closure is created when a function is defined inside another function. The inner function retains access to the variables in the outer function's scope. the outer function has completed execution, as long as the inner function still exists
-Currying: this functional programming concept that takes multiple arguments is transformed into sequence of functions that each take a single argument
-Event Bubbling: The event starts from the target element and propagates upward to its ancestors it is a default behaviour.
-Event Capturing: The event propagates downward from the root to the target when true is passed in addEventListener().
-Event Delegation: A single event listener on a parent element handles events from its children using event.target.
+- null: Null is used to represent an intentional absence of any object value
+- undefined: indicates a variable is declared but not assigned a value
+- call, app, bind are methods in javascript that allow to manipulate the THIS keyword within function
+- call() method is used to call a function with specified THIS value and arguments in individually
+- apply() method is used to similar like call but we need pass arguments in array
+- bind() method create new function that want to called for execution we can pass argument type or array
+- hoisting: default behavior of moving declarations to the top of the current scope (script or function) during the compilation phase.
+- var: var is global scope
+- let and const: is function scope in let variable assigned new value but we cannot reassigned same name variable and const is fixed value we cannot reassign value or same variable name but we can modify with non-primitive types like object and array
+- function declaration: a function defines a function using the function keyword followed by function\_name, parentheses and curly braces
+- function expression: a function defines a function and assigns it to variable is
+- closure: A closure is created when a function is defined inside another function. The inner function retains access to the variables in the outer function's scope. the outer function has completed execution, as long as the inner function still exists
+- Currying: this functional programming concept that takes multiple arguments is transformed into sequence of functions that each take a single argument
+- Event Bubbling: The event starts from the target element and propagates upward to its ancestors it is a default behaviour.
+- Event Capturing: The event propagates downward from the root to the target when true is passed in addEventListener().
+- Event Delegation: A single event listener on a parent element handles events from its children using event.target.
 ////////////////////////
-Shallow copy: shallow copy creates a new object or array, but only one level deep.
-Deep copy: A deep copy creates a completely new object or array, and it recursively copies all nested objects or arrays.
-map(): map transforms each element via callback function and return a new array with the tranformed values
-forEach(): Iterates over an array and executes a provided callback function for each element, primarily for performing side effects. It does not return a value
-filter(): filter creates a new array containing only the elements that satisfy the condition specified in the callback function
-reduce(): is a higher-order array method that accumulates into a single output value using callback function.
-find(): Use when you need to find the first match.
-findIndex(): Use when you need the index of the first match.
-some(): Use to check if at least one element matches a condition.
-every(): Use to check if all elements match a condition.
-sort(): Use to reorder elements.
-includes(): Use to check if an element exists.
-concat(): Use to combine arrays.
-flat(): Use to flatten nested arrays.
-join(): Use to join elements into a string.
-slice(): Extracts a portion of an array (or string) and returns a new array without changing the original. Use: Get a subset of data non-destructively.
-splice(): Modifies an array by adding, removing, or replacing elements at a specified index; returns the removed elements. Use: Alter the original array dynamically.
-split(): Divides a string into an array of substrings based on a delimiter; doesn’t affect the original string.
-Use: Parse or break down strings into manageable parts.
-Rest → The rest operator collects all remaining arguments passed to a function into an array. rest operator must be the last parameter.
-Spread → Expands elements from an array/object into individual items.
-Array Destructuring: Extract values from an array into variables
-Object Destructuring: Extract values from an object into variables.
+- Shallow copy: shallow copy creates a new object or array, but only one level deep.
+- Deep copy: A deep copy creates a completely new object or array, and it recursively copies all nested objects or arrays.
+- map(): map transforms each element via callback function and return a new array with the tranformed values
+- forEach(): Iterates over an array and executes a provided callback function for each element, primarily for performing side effects. It does not return a value
+- filter(): filter creates a new array containing only the elements that satisfy the condition specified in the callback function
+- reduce(): is a higher-order array method that accumulates into a single output value using callback function.
+- find(): Use when you need to find the first match.
+- findIndex(): Use when you need the index of the first match.
+- some(): Use to check if at least one element matches a condition.
+- every(): Use to check if all elements match a condition.
+- sort(): Use to reorder elements.
+- includes(): Use to check if an element exists.
+- concat(): Use to combine arrays.
+- flat(): Use to flatten nested arrays.
+- join(): Use to join elements into a string.
+- slice(): Extracts a portion of an array (or string) and returns a new array without changing the original. Use: Get a subset of data non-destructively.
+- splice(): Modifies an array by adding, removing, or replacing elements at a specified index; returns the removed elements. Use: Alter the original array dynamically.
+- split(): Divides a string into an array of substrings based on a delimiter; doesn’t affect the original string.
+-Rest → The rest operator collects all remaining arguments passed to a function into an array. rest operator must be the last parameter.
+-Spread → Expands elements from an array/object into individual items.
+-Array Destructuring: Extract values from an array into variables
+-Object Destructuring: Extract values from an object into variables.
 ///////////////////////////
-Promises: Handling asynchronous operations providing a clear and more manageable approach to traditional callback based methods. promise states are pending, fulfilled, rejected
-Promises.all(): Waits for all promises to resolve and returns their results as an array. If any promise is rejected, it immediately rejects all promises.
+- Promises: Handling asynchronous operations providing a clear and more manageable approach to traditional callback based methods. promise states are pending, fulfilled, rejected
+- Promises.all(): Waits for all promises to resolve and returns their results as an array. If any promise is rejected, it immediately rejects all promises.
 let p1 = new Promise((resolve) => setTimeout(() => resolve("One"), 1000));
 let p2 = new Promise((resolve) => setTimeout(() => resolve("Two"), 2000));
 let p3 = new Promise((resolve, rej) => setTimeout(() => rej("Three"), 3000));
 Promise.all([p1, p2, p3]).then(console.log).catch(console.log);
-Promise.allSettled(): Waits for all promises to settle (fulfilled or rejected) Method and returns an array of their outcomes.
+- Promise.allSettled(): Waits for all promises to settle (fulfilled or rejected) Method and returns an array of their outcomes.
 Promise.allSettled([Promise.resolve(1), Promise.reject("Error")])
 .then(console.log);
-Promise.race(): Resolves/rejects with the first completed promise.
+- Promise.race(): Resolves/rejects with the first completed promise.
 Promise.race([new Promise((res) => setTimeout(res, 100, "Fast")),
 new Promise((res) => setTimeout(res, 500, "Slow"))])
 .then(console.log); // Output: Fast
-Promise.any():  Resolves with the first fulfilled promise (ignores rejections).
+- Promise.any():  Resolves with the first fulfilled promise (ignores rejections).
 Promise.any([Promise.reject("Error"), Promise.resolve("Success")])
 .then(console.log); // Output: Success
 async/await: async/await is a modern way to handle asynchronous code, making it look synchronous and more readable. async makes a function return a Promise, and await pauses execution until the Promise resolves.
 //Object
-Object.freeze: Makes an object completely immutable. Cannot add, delete, or modify properties. All properties become non-writable
-Object.seal: Makes an object modification of existing property values. Cannot add or delete properties.
+- Object.freeze: Makes an object completely immutable. Cannot add, delete, or modify properties. All properties become non-writable
+- Object.seal: Makes an object modification of existing property values. Cannot add or delete properties.
 /////////////////////
-OOPS: object oriented programming structure to organizes code into objects that properties(data) and methods(functions)
-encapsulation: is the building of properties and methods into a single object. it restricts direct access to some of the object components
-inheritance: it allows a class (child) to inherit properties and method from another class using extends keywords
-polymorphism: it allows methods in different classes to share the same name but behave differently based context
-abstraction: it hides complex implementation details and exposes only the necessary functionality. JavaScript doesn’t have built-in abstract classes but can achieve abstraction using classes and methods.
-Classes: A blueprint for creating objects. It defines properties and methods
-Object: An instance of a class.
+- OOPS: object oriented programming structure to organizes code into objects that properties(data) and methods(functions)
+- encapsulation: is the building of properties and methods into a single object. it restricts direct access to some of the object components
+- inheritance: it allows a class (child) to inherit properties and method from another class using extends keywords
+- polymorphism: it allows methods in different classes to share the same name but behave differently based context
+- abstraction: it hides complex implementation details and exposes only the necessary functionality. JavaScript doesn’t have built-in abstract classes but can achieve abstraction using classes and methods.
+- Classes: A blueprint for creating objects. It defines properties and methods
+- Object: An instance of a class.
 /////////////////////////
 ***
 generate code make like questions, answers, output, and explanation.
