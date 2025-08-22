@@ -1,5 +1,167 @@
 # JavaScript Coding Interview Questions & Answers
 
+# Index: JavaScript Coding Interview Questions & Answers
+
+This index provides quick links to each question and topic covered in [Second.md](./Second.md). Click on a topic to jump to its explanation and code examples.
+
+---
+
+## Basic & Core JavaScript
+
+1. [Call, Apply, and Bind – Difference + Polyfill](#1️⃣-call-apply-and-bind--difference--polyfill)
+2. [Flatten Array (No Array.flat)](#2️⃣-flatten-array-no-arrayflat)
+3. [Inline 5 divs in a row without flex/margin/padding](#3️⃣-inline-5-divs-in-a-row-without-flexmarginpadding)
+4. [Find sum of numbers without for loop (reduce or recursion)](#4️⃣-find-sum-of-numbers-without-for-loop-reduce-or-recursion)
+5. [Deep Copy vs Shallow Copy Example](#5️⃣-deep-copy-vs-shallow-copy-example)
+6. [Promise & Async/Await Output](#6️⃣-promise--asyncawait-output)
+7. [Find first repeating character in a string](#7️⃣-find-first-repeating-character-in-a-string)
+8. [Implement a Stopwatch (Start, Stop, Reset)](#8️⃣-implement-a-stopwatch-start-stop-reset)
+9. [Build a To-Do List (Vanilla JS Example)](#9️⃣-build-a-to-do-list-vanilla-js-example)
+10. [Currying Function for Infinite Sum – sum(10)(20)(30)()](#🔟-currying-function-for-infinite-sum--sum102030)
+
+---
+
+## Intermediate JavaScript
+
+11. [Event Loop & Microtasks Output Question](#1️⃣1️⃣-event-loop--microtasks-output-question)
+12. [Polyfill for Array.map](#1️⃣2️⃣-polyfill-for-arraymap)
+13. [Unique Values from Array](#1️⃣3️⃣-unique-values-from-array)
+14. [Debounce Function + Difference with Throttle](#1️⃣4️⃣-debounce-function--difference-with-throttle)
+15. [Implement Promise.all Polyfill](#1️⃣5️⃣-implement-promiseall-polyfill)
+16. [Hoisting Var vs Let Example](#1️⃣6️⃣-hoisting-var-vs-let-example)
+17. [Check Palindrome String](#1️⃣7️⃣-check-palindrome-string)
+18. [Memoization Example](#1️⃣8️⃣-memoization-example)
+19. [Implement call/apply/bind Polyfills](#1️⃣9️⃣-implement-callapplybind-polyfills)
+20. [Convert Object to Query String](#2️⃣0️⃣-convert-object-to-query-string)
+21. [Array Chunking](#2️⃣1️⃣-array-chunking)
+22. [Flatten Object Keys (dot notation)](#2️⃣2️⃣-flatten-object-keys-dot-notation)
+23. [Difference Between == vs ===](#2️⃣3️⃣-difference-between--vs-)
+24. [Implement once Function](#2️⃣4️⃣-implement-once-function)
+25. [Reverse Words in Sentence](#2️⃣5️⃣-reverse-words-in-sentence)
+26. [Deep Freeze Object](#2️⃣6️⃣-deep-freeze-object)
+27. [Event Delegation Example](#2️⃣7️⃣-event-delegation-example)
+28. [Closure Output Question](#2️⃣8️⃣-closure-output-question)
+29. [Convert Array to Object](#2️⃣9️⃣-convert-array-to-object)
+30. [Polyfill for Array.filter](#3️⃣0️⃣-polyfill-for-arrayfilter)
+31. [Output Question (Hoisting + TDZ)](#3️⃣1️⃣-output-question-hoisting--tdz)
+32. [Polyfill for Array.reduce](#3️⃣2️⃣-polyfill-for-arrayreduce)
+33. [this Binding in setTimeout](#3️⃣3️⃣-this-binding-in-settimeout)
+34. [Implement groupBy Function](#3️⃣4️⃣-implement-groupby-function)
+35. [Closure in Loop Output](#3️⃣5️⃣-closure-in-loop-output)
+36. [Shuffle Array](#3️⃣6️⃣-shuffle-array)
+37. [Polyfill for Array.from](#3️⃣7️⃣-polyfill-for-arrayfrom)
+38. [Object Keys with non-primitive keys](#3️⃣8️⃣-object-keys-with-non-primitive-keys)
+39. [Throttle Function + Difference with Debounce](#3️⃣9️⃣-throttle-function--difference-with-debounce)
+40. [Convert Query String to Object](#4️⃣0️⃣-convert-query-string-to-object)
+41. [Async/Await vs Promise Execution Order](#4️⃣1️⃣-asyncawait-vs-promise-execution-order)
+42. [Polyfill for Promise.race](#4️⃣2️⃣-polyfill-for-promiserace)
+43. [Default Parameters TDZ Question](#4️⃣3️⃣-default-parameters-tdz-question)
+44. [Infinite Currying with Multiplication](#4️⃣4️⃣-infinite-currying-with-multiplication)
+45. [Implement deepEqual Function](#4️⃣5️⃣-implement-deepequal-function)
+46. [Set with NaN/undefined/null size question](#4️⃣6️⃣-set-with-nanundefinednull-size-question)
+47. [Event Emitter (Pub/Sub)](#4️⃣7️⃣-event-emitter-pubsub)
+48. [Object.freeze vs seal](#4️⃣8️⃣-objectfreeze-vs-seal)
+49. [Compose vs Pipe Functions](#4️⃣9️⃣-compose-vs-pipe-functions)
+50. [Arguments Object Mutation](#5️⃣0️⃣-arguments-object-mutation)
+
+---
+
+## Advanced & Senior Topics
+
+51. [IIFE & Closure Output](#5️⃣1️⃣-iife--closure-output)
+52. [Polyfill for Array.flatMap](#5️⃣2️⃣-polyfill-for-arrayflatmap)
+53. [Object Destructuring Defaults](#5️⃣3️⃣-object-destructuring-defaults)
+54. [Clone DOM Node with Events](#5️⃣4️⃣-clone-dom-node-with-events)
+55. [Function length property with defaults](#5️⃣5️⃣-function-length-property-with-defaults)
+56. [Polyfill for Promise.allSettled](#5️⃣6️⃣-polyfill-for-promiseallsettled)
+57. [Implicit Coercion Outputs ({}+[] etc)](#5️⃣7️⃣-implicit-coercion-outputs--etc)
+58. [Retry Function Implementation](#5️⃣8️⃣-retry-function-implementation)
+59. [Delete Operator Behavior](#5️⃣9️⃣-delete-operator-behavior)
+60. [Lazy Function with Currying](#6️⃣0️⃣-lazy-function-with-currying)
+61. [Async/Await with setTimeout Execution Order](#6️⃣1️⃣-asyncawait-with-settimeout-execution-order)
+62. [Polyfill Function.prototype.defer](#6️⃣2️⃣-polyfill-functionprototypedefer)
+63. [Spread vs Object.assign Shallow Copy](#6️⃣3️⃣-spread-vs-objectassign-shallow-copy)
+64. [Polyfill Array.some](#6️⃣4️⃣-polyfill-arraysome)
+65. [Optional chaining + Nullish Coalescing Example](#6️⃣5️⃣-optional-chaining--nullish-coalescing-example)
+66. [LRU Cache Implementation](#6️⃣6️⃣-lru-cache-implementation)
+67. [Array Holes Behavior](#6️⃣7️⃣-array-holes-behavior)
+68. [Debounce with Immediate Option](#6️⃣8️⃣-debounce-with-immediate-option)
+69. [Class Field vs Prototype property](#6️⃣9️⃣-class-field-vs-prototype-property)
+70. [Polyfill for new operator](#7️⃣0️⃣-polyfill-for-new-operator)
+71. [Promise Chain with Error Handling Output](#7️⃣1️⃣-promise-chain-with-error-handling-output)
+72. [Polyfill Array.every](#7️⃣2️⃣-polyfill-arrayevery)
+73. [Function Overloading Simulation](#7️⃣3️⃣-function-overloading-simulation)
+74. [JSON.stringify (basic) Implementation](#7️⃣4️⃣-jsonstringify-basic-implementation)
+75. [Prototype vs Instance property Output](#7️⃣5️⃣-prototype-vs-instance-property-output)
+76. [Polyfill for instanceof](#7️⃣6️⃣-polyfill-for-instanceof)
+77. [Symbol Keys in Objects](#7️⃣7️⃣-symbol-keys-in-objects)
+78. [Scheduler Implementation](#7️⃣8️⃣-scheduler-implementation)
+79. [Tagged Template Literals Behavior](#7️⃣9️⃣-tagged-template-literals-behavior)
+80. [Polyfill Object.create](#8️⃣0️⃣-polyfill-objectcreate)
+81. [Async/Await with Multiple Awaits Order](#8️⃣1️⃣-asyncawait-with-multiple-awaits-order)
+82. [Polyfill setInterval using setTimeout](#8️⃣2️⃣-polyfill-setinterval-using-settimeout)
+83. [Array sort lexicographic behavior](#8️⃣3️⃣-array-sort-lexicographic-behavior)
+84. [Async Pipe Function](#8️⃣4️⃣-async-pipe-function)
+85. [typeof null vs instanceof Object](#8️⃣5️⃣-typeof-null-vs-instanceof-object)
+86. [Virtual DOM Diff (shallow)](#8️⃣6️⃣-virtual-dom-diff-shallow)
+87. [Eval Scope Example](#8️⃣7️⃣-eval-scope-example)
+88. [Priority Queue Implementation](#8️⃣8️⃣-priority-queue-implementation)
+89. [Async Constructor Example](#8️⃣9️⃣-async-constructor-example)
+90. [Safe get(obj, path) like Lodash](#9️⃣0️⃣-safe-getobj-path-like-lodash)
+91. [Destructuring with Rest Output](#9️⃣1️⃣-destructuring-with-rest-output)
+92. [Polyfill for Promise.any](#9️⃣2️⃣-polyfill-for-promiseany)
+93. [Async/Await Error Handling with try/catch](#9️⃣3️⃣-asyncawait-error-handling-with-trycatch)
+94. [Deep Clone with Circular References](#9️⃣4️⃣-deep-clone-with-circular-references)
+95. [Object.defineProperty writable false Example](#9️⃣5️⃣-objectdefineproperty-writable-false-example)
+96. [Task Runner with Concurrency Limit](#9️⃣6️⃣-task-runner-with-concurrency-limit)
+97. [Tricky Assignment (a.x = a = {...})](#9️⃣7️⃣-tricky-assignment-ax--a--)
+98. [Polyfill Array.isArray](#9️⃣8️⃣-polyfill-arrayisarray)
+99. [with Statement Output](#9️⃣9️⃣-with-statement-output)
+100. [Observable Implementation](#🔟0️⃣0️⃣-observable-implementation)
+
+---
+
+## Senior Developer Mock Interview Set
+
+- [Closures in JavaScript with Example](#explain-closures-in-javascript-with-an-example)
+- [Promises & async/await](#what-are-promises-how-do-you-use-asyncawait)
+- [Deep vs Shallow Copy](#deep-vs-shallow-copy--how-do-you-deep-clone-an-object)
+- [Event Delegation](#what-is-event-delegation)
+- [this Keyword and Arrow Functions](#explain-the-this-keyword-and-arrow-functions)
+- [Debounce & Throttle](#how-do-you-debounce-and-throttle-a-function)
+- [Prototypal Inheritance](#how-does-prototypal-inheritance-work)
+- [Module Pattern](#explain-the-module-pattern-in-javascript)
+- [== vs ===](#what-is-the-difference-between--and-)
+- [Custom bind function](#how-would-you-implement-a-custom-bind-function)
+- [Memoization](#how-do-you-implement-memoization)
+- [Event loop & call stack](#explain-the-event-loop-and-call-stack-in-javascript)
+- [Currying](#what-is-currying)
+- [Memory leaks](#how-do-you-detect-memory-leaks-in-javascript)
+- [Array.prototype.flat polyfill](#how-do-you-implement-arrayprototypeflat)
+- [map function internals](#how-does-the-map-function-work-internally)
+- [Async/Await error handling](#how-do-you-handle-errors-in-asyncawait-code)
+- [WeakMap vs WeakSet](#what-are-weakmap-and-weakset)
+- [Object.freeze vs const](#what-is-the-difference-between-objectfreeze-and-const)
+- [Microtasks vs Macrotasks](#explain-microtasks-and-macrotasks)
+- [call, apply, bind](#what-is-the-difference-between-call-apply-and-bind)
+- [Object.assign polyfill](#how-do-you-polyfill-objectassign)
+- [Arrow functions unsuitable scenarios](#describe-a-scenario-where-arrow-functions-are-not-suitable)
+- [Make object iterable](#how-can-you-make-an-object-iterable)
+- [Singleton pattern](#how-do-you-implement-a-singleton-pattern-in-javascript)
+- [Generators](#what-are-generators-and-how-do-you-use-them)
+- [Convert array-like object to array](#how-do-you-convert-an-array-like-object-to-an-array)
+- [Temporal Dead Zone (TDZ)](#what-is-the-temporal-dead-zone-tdz)
+- [Destructuring & default params](#how-do-you-use-destructuring-and-default-parameters)
+- [LRU cache](#how-would-you-implement-a-simple-lru-cache)
+
+---
+
+# How to Use This Index
+
+- For each topic, use the search or click the link to go directly to the explanation and code snippet.
+- This index helps quickly navigate 100+ key JavaScript coding interview questions and senior developer concepts.
+
+---
 ---
 
 ## 1️⃣ Call, Apply, and Bind – Difference + Polyfill
