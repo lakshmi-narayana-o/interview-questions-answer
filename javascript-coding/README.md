@@ -678,4 +678,1365 @@ console.log([...lru.cache.keys()]); // ['a', 'c']
 **Explanation:**  
 Use a `Map` to keep insertion order; on access, re-insert the key; evict oldest if over limit.
 
+
+# JavaScript Coding Interview Questions & Answers
+
+---
+
+## 1️⃣ Call, Apply, and Bind – Difference + Polyfill
+
+**Explanation:**  
+- `call` invokes a function with a given `this` and arguments list.
+- `apply` is like call, but takes arguments as an array.
+- `bind` returns a new function with a bound `this` and (optionally) preset arguments.
+
+```js
+function greet(place) { return `Hello ${this.name} from ${place}`; }
+const obj = { name: "Alice" };
+
+greet.call(obj, "NY");     // "Hello Alice from NY"
+greet.apply(obj, ["LA"]);  // "Hello Alice from LA"
+const bound = greet.bind(obj, "SF");
+bound(); // "Hello Alice from SF"
+```
+
+**Polyfills:**
+```js
+Function.prototype.myCall = function(context, ...args) {
+  context = context || globalThis;
+  const fn = Symbol('fn');
+  context[fn] = this;
+  const result = context[fn](...args);
+  delete context[fn];
+  return result;
+};
+
+Function.prototype.myApply = function(context, args) {
+  context = context || globalThis;
+  const fn = Symbol('fn');
+  context[fn] = this;
+  const result = context[fn](...(args || []));
+  delete context[fn];
+  return result;
+};
+
+Function.prototype.myBind = function(context, ...args1) {
+  const fn = this;
+  return function(...args2) {
+    return fn.apply(context, [...args1, ...args2]);
+  };
+};
+```
+
+---
+
+## 2️⃣ Flatten Array (No Array.flat)
+
+**Input:** `[1,2,3,[4,5,6,[7,8,[10,11]]],9]`  
+**Output:** `[1,2,3,4,5,6,7,8,10,11,9]`
+
+```js
+function flatten(arr) {
+  return arr.reduce((acc, val) =>
+    acc.concat(Array.isArray(val) ? flatten(val) : val), []);
+}
+console.log(flatten([1,2,3,[4,5,6,[7,8,[10,11]]],9]));
+// [1,2,3,4,5,6,7,8,10,11,9]
+```
+
+---
+
+## 3️⃣ Inline 5 divs in a row without flex/margin/padding
+
+**Solution:**  
+```html
+<div style="display:inline-block;">1</div>
+<div style="display:inline-block;">2</div>
+<div style="display:inline-block;">3</div>
+<div style="display:inline-block;">4</div>
+<div style="display:inline-block;">5</div>
+```
+
+---
+
+## 4️⃣ Find sum of numbers without for loop (reduce or recursion)
+
+**Solution (reduce):**
+```js
+[1, 2, 3, 4].reduce((a,b) => a+b, 0); // 10
+```
+**Solution (recursion):**
+```js
+function sum(arr) {
+  if (!arr.length) return 0;
+  return arr[0] + sum(arr.slice(1));
+}
+sum([1,2,3,4]); // 10
+```
+
+---
+
+## 5️⃣ Deep Copy vs Shallow Copy Example
+
+**Shallow Copy:**
+```js
+const obj1 = { a: 1, b: { c: 2 } };
+const obj2 = {...obj1}; // Shallow
+obj2.b.c = 3;
+console.log(obj1.b.c); // 3 (affected)
+```
+
+**Deep Copy:**
+```js
+const obj1 = { a: 1, b: { c: 2 } };
+const obj2 = JSON.parse(JSON.stringify(obj1));
+obj2.b.c = 3;
+console.log(obj1.b.c); // 2 (not affected)
+```
+
+---
+
+## 6️⃣ Promise & Async/Await Output
+
+```js
+async function test() {
+  console.log(1);
+  await Promise.resolve();
+  console.log(2);
+}
+test(); 
+console.log(3);
+// Output: 1, 3, 2
+```
+
+---
+
+## 7️⃣ Find first repeating character in a string
+
+```js
+function firstRepeatingChar(str) {
+  const set = new Set();
+  for (let ch of str) {
+    if (set.has(ch)) return ch;
+    set.add(ch);
+  }
+  return null;
+}
+firstRepeatingChar("acbbac"); // "b"
+```
+
+---
+
+## 8️⃣ Implement a Stopwatch (Start, Stop, Reset)
+
+```js
+class Stopwatch {
+  constructor() { this.startTime = 0; this.elapsed = 0; this.running = false; }
+  start() {
+    if (!this.running) { this.running = true; this.startTime = Date.now() - this.elapsed; }
+  }
+  stop() {
+    if (this.running) { this.running = false; this.elapsed = Date.now() - this.startTime; }
+  }
+  reset() {
+    this.startTime = 0; this.elapsed = 0; this.running = false;
+  }
+  getTime() {
+    return this.running ? Date.now() - this.startTime : this.elapsed;
+  }
+}
+```
+
+---
+
+## 9️⃣ Build a To-Do List (Vanilla JS Example)
+
+```html
+<input id="todo-input"><button onclick="addTodo()">Add</button>
+<ul id="todo-list"></ul>
+<script>
+function addTodo() {
+  const val = document.getElementById('todo-input').value;
+  if (!val) return;
+  const li = document.createElement('li');
+  li.textContent = val;
+  document.getElementById('todo-list').appendChild(li);
+  document.getElementById('todo-input').value = '';
+}
+</script>
+```
+
+---
+
+## 🔟 Currying Function for Infinite Sum – sum(10)(20)(30)()
+
+```js
+function sum(a) {
+  return function(b) {
+    if (b === undefined) return a;
+    return sum(a + b);
+  }
+}
+sum(10)(20)(30)(); // 60
+```
+Or with valueOf (for implicit conversion):
+
+```js
+function currySum(a) {
+  let total = a;
+  function inner(b) {
+    if (b === undefined) return total;
+    total += b;
+    return inner;
+  }
+  inner.valueOf = () => total;
+  inner.toString = () => String(total);
+  return inner;
+}
+currySum(1)(2)(3)(); // 6
+```
+
+---
+
+## 1️⃣1️⃣ Event Loop & Microtasks Output Question
+
+```js
+console.log(1);
+setTimeout(()=>console.log(2));
+Promise.resolve().then(()=>console.log(3));
+console.log(4);
+// Output: 1,4,3,2
+```
+
+---
+
+## 1️⃣2️⃣ Polyfill for Array.map
+
+```js
+Array.prototype.myMap = function(callback, thisArg) {
+  let arr = [];
+  for(let i=0;i<this.length;i++) {
+    arr.push(callback.call(thisArg, this[i], i, this));
+  }
+  return arr;
+};
+[1,2,3].myMap(x=>x*2); // [2,4,6]
+```
+
+---
+
+## 1️⃣3️⃣ Unique Values from Array
+
+```js
+[1,2,2,3,4,4].filter((v,i,a)=>a.indexOf(v)===i); // [1,2,3,4]
+// Or
+[...new Set([1,2,2,3,4,4])]; // [1,2,3,4]
+```
+
+---
+
+## 1️⃣4️⃣ Debounce Function + Difference with Throttle
+
+**Debounce:** Wait for inactivity, then run.
+**Throttle:** Run at most every X ms.
+
+```js
+function debounce(fn, delay) {
+  let timer;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(()=>fn.apply(this, args), delay);
+  }
+}
+```
+**Throttle:**
+```js
+function throttle(fn, delay) {
+  let last = 0;
+  return function(...args) {
+    const now = Date.now();
+    if (now - last >= delay) {
+      last = now;
+      fn.apply(this, args);
+    }
+  }
+}
+```
+
+---
+
+## 1️⃣5️⃣ Implement Promise.all Polyfill
+
+```js
+Promise.myAll = function(proms) {
+  return new Promise((res, rej) => {
+    let out = [], count = 0;
+    proms.forEach((p, i) => {
+      Promise.resolve(p).then(val => {
+        out[i] = val; count++;
+        if (count === proms.length) res(out);
+      }, rej);
+    });
+  });
+};
+```
+
+---
+
+## 1️⃣6️⃣ Hoisting Var vs Let Example
+
+```js
+console.log(a); // undefined
+var a = 10;
+console.log(b); // ReferenceError
+let b = 10;
+```
+
+---
+
+## 1️⃣7️⃣ Check Palindrome String
+
+```js
+function isPalindrome(s) {
+  return s === s.split('').reverse().join('');
+}
+isPalindrome('madam'); // true
+```
+
+---
+
+## 1️⃣8️⃣ Memoization Example
+
+```js
+function memoize(fn) {
+  const cache = {};
+  return function(...args) {
+    const key = JSON.stringify(args);
+    if (!(key in cache)) cache[key] = fn.apply(this, args);
+    return cache[key];
+  };
+}
+const fib = memoize(n => n<2 ? n : fib(n-1)+fib(n-2));
+fib(40); // Fast
+```
+
+---
+
+## 1️⃣9️⃣ Implement call/apply/bind Polyfills
+See #1 above.
+
+---
+
+## 2️⃣0️⃣ Convert Object to Query String
+
+```js
+function toQuery(obj) {
+  return Object.entries(obj)
+    .map(([k,v])=>`${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+    .join('&');
+}
+toQuery({a:1, b:'hi'}); // "a=1&b=hi"
+```
+
+---
+
+## 2️⃣1️⃣ Array Chunking
+
+```js
+function chunk(arr, size) {
+  let out = [];
+  for (let i=0;i<arr.length;i+=size)
+    out.push(arr.slice(i, i+size));
+  return out;
+}
+chunk([1,2,3,4,5], 2); // [[1,2],[3,4],[5]]
+```
+
+---
+
+## 2️⃣2️⃣ Flatten Object Keys (dot notation)
+
+```js
+function flatten(obj, prefix='') {
+  return Object.keys(obj).reduce((acc,k)=>{
+    const pre = prefix.length ? prefix+'.'+k : k;
+    if (typeof obj[k]=='object' && obj[k]!==null && !Array.isArray(obj[k])) 
+      Object.assign(acc, flatten(obj[k], pre));
+    else acc[pre]=obj[k];
+    return acc;
+  },{});
+}
+flatten({a:1, b:{c:2,d:3}}); // {a:1, 'b.c':2, 'b.d':3}
+```
+
+---
+
+## 2️⃣3️⃣ Difference Between == vs ===
+
+- `==` checks value after type coercion (loose equality).
+- `===` checks value and type (strict equality).
+
+```js
+0 == '0'    // true
+0 === '0'   // false
+```
+
+---
+
+## 2️⃣4️⃣ Implement once Function
+
+```js
+function once(fn) {
+  let called = false, res;
+  return function(...args) {
+    if (!called) { called=true; res=fn.apply(this,args); }
+    return res;
+  }
+}
+```
+
+---
+
+## 2️⃣5️⃣ Reverse Words in Sentence
+
+```js
+function reverseWords(str) {
+  return str.split(' ').reverse().join(' ');
+}
+reverseWords('hello world now'); // 'now world hello'
+```
+
+---
+
+## 2️⃣6️⃣ Deep Freeze Object
+
+```js
+function deepFreeze(obj) {
+  Object.getOwnPropertyNames(obj).forEach(prop=>{
+    if(typeof obj[prop]=='object' && obj[prop]!==null)
+      deepFreeze(obj[prop]);
+  });
+  return Object.freeze(obj);
+}
+```
+
+---
+
+## 2️⃣7️⃣ Event Delegation Example
+
+```html
+<ul id="list">
+  <li>1</li><li>2</li>
+</ul>
+<script>
+list.onclick = e => {
+  if (e.target.tagName === 'LI') alert(e.target.textContent);
+};
+</script>
+```
+
+---
+
+## 2️⃣8️⃣ Closure Output Question
+
+```js
+for(var i=0;i<3;i++){
+  setTimeout(()=>console.log(i),0);
+}
+// 3,3,3
+for(let i=0;i<3;i++){
+  setTimeout(()=>console.log(i),0);
+}
+// 0,1,2
+```
+
+---
+
+## 2️⃣9️⃣ Convert Array to Object
+
+```js
+['a','b','c'].reduce((acc,v,i)=>{acc[i]=v;return acc;},{});
+// {0:'a',1:'b',2:'c'}
+```
+
+---
+
+## 3️⃣0️⃣ Polyfill for Array.filter
+
+```js
+Array.prototype.myFilter = function(cb, thisArg) {
+  let arr = [];
+  for(let i=0;i<this.length;i++)
+    if(cb.call(thisArg, this[i], i, this)) arr.push(this[i]);
+  return arr;
+};
+[1,2,3].myFilter(x=>x>1); // [2,3]
+```
+
+---
+
+## 3️⃣1️⃣ Output Question (Hoisting + TDZ)
+
+```js
+{
+  console.log(a); // undefined
+  var a = 1;
+  //console.log(b); // ReferenceError
+  let b = 2;
+}
+```
+
+---
+
+## 3️⃣2️⃣ Polyfill for Array.reduce
+
+```js
+Array.prototype.myReduce = function(cb, init) {
+  let acc = init===undefined ? this[0] : init;
+  let i = init===undefined ? 1 : 0;
+  for(;i<this.length;i++) acc = cb(acc, this[i], i, this);
+  return acc;
+}
+[1,2,3].myReduce((a,b)=>a+b); // 6
+```
+
+---
+
+## 3️⃣3️⃣ this Binding in setTimeout
+
+```js
+const obj = {
+  val: 42,
+  method: function() {
+    setTimeout(function() {
+      console.log(this.val); // undefined (window/global)
+    }, 0);
+    setTimeout(() => {
+      console.log(this.val); // 42 (arrow binds lexical this)
+    }, 0);
+  }
+};
+obj.method();
+```
+
+---
+
+## 3️⃣4️⃣ Implement groupBy Function
+
+```js
+function groupBy(arr, fn) {
+  return arr.reduce((acc, v) => {
+    const key = fn(v);
+    (acc[key]=acc[key]||[]).push(v);
+    return acc;
+  }, {});
+}
+groupBy([1,2,3,4], x=>x%2); // {0:[2,4],1:[1,3]}
+```
+
+---
+
+## 3️⃣5️⃣ Closure in Loop Output
+
+```js
+for(var i=1;i<=3;i++){
+  setTimeout(()=>console.log(i),i*100); // 4,4,4
+}
+for(let i=1;i<=3;i++){
+  setTimeout(()=>console.log(i),i*100); // 1,2,3
+}
+```
+
+---
+
+## 3️⃣6️⃣ Shuffle Array
+
+```js
+function shuffle(arr) {
+  for(let i=arr.length-1;i>0;i--){
+    let j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+```
+
+---
+
+## 3️⃣7️⃣ Polyfill for Array.from
+
+```js
+Array.myFrom = function(iterable, mapFn, thisArg) {
+  let arr = [];
+  for (let i=0;i<iterable.length;i++)
+    arr.push(mapFn ? mapFn.call(thisArg, iterable[i], i) : iterable[i]);
+  return arr;
+}
+```
+
+---
+
+## 3️⃣8️⃣ Object Keys with non-primitive keys
+
+**Explanation:**  
+Only strings/symbols can be object keys. Objects used as keys are coerced to `"[object Object]"`.
+
+```js
+const a = {}, b = {};
+const obj = {};
+obj[a] = 1;
+obj[b] = 2;
+console.log(obj); // { '[object Object]': 2 }
+```
+
+---
+
+## 3️⃣9️⃣ Throttle Function + Difference with Debounce
+
+See #14 above.
+
+---
+
+## 4️⃣0️⃣ Convert Query String to Object
+
+```js
+function toObj(str) {
+  return str.split('&').reduce((acc, pair) => {
+    let [k, v] = pair.split('=');
+    acc[decodeURIComponent(k)] = decodeURIComponent(v);
+    return acc;
+  }, {});
+}
+toObj('a=1&b=hi'); // {a:'1',b:'hi'}
+```
+
+---
+
+## 4️⃣1️⃣ Async/Await vs Promise Execution Order
+
+```js
+console.log(1);
+async function f() {
+  console.log(2);
+  await null;
+  console.log(3);
+}
+f();
+Promise.resolve().then(()=>console.log(4));
+console.log(5);
+// Output: 1,2,5,4,3
+```
+
+---
+
+## 4️⃣2️⃣ Polyfill for Promise.race
+
+```js
+Promise.myRace = function(iter){
+  return new Promise((res,rej)=>{
+    for(let p of iter)
+      Promise.resolve(p).then(res, rej);
+  });
+}
+```
+
+---
+
+## 4️⃣3️⃣ Default Parameters TDZ Question
+
+```js
+// console.log(x); // ReferenceError
+let x = 1;
+function foo(a=x) { return a; }
+foo(); // 1
+```
+
+---
+
+## 4️⃣4️⃣ Infinite Currying with Multiplication
+
+```js
+function mul(a) {
+  return function(b) {
+    if (b === undefined) return a;
+    return mul(a * b);
+  }
+}
+mul(2)(3)(4)(); // 24
+```
+
+---
+
+## 4️⃣5️⃣ Implement deepEqual Function
+
+```js
+function deepEqual(a, b) {
+  if (a === b) return true;
+  if (typeof a != 'object' || typeof b != 'object' || a==null || b==null) return false;
+  let keysA = Object.keys(a), keysB = Object.keys(b);
+  if (keysA.length !== keysB.length) return false;
+  for (let k of keysA)
+    if (!deepEqual(a[k], b[k])) return false;
+  return true;
+}
+```
+
+---
+
+## 4️⃣6️⃣ Set with NaN/undefined/null size question
+
+```js
+const s = new Set([NaN, NaN, undefined, null, null]);
+console.log(s.size); // 3 (NaN, undefined, null)
+```
+
+---
+
+## 4️⃣7️⃣ Event Emitter (Pub/Sub)
+
+```js
+class Emitter {
+  constructor() { this.events = {}; }
+  on(e, fn) { (this.events[e]=this.events[e]||[]).push(fn); }
+  off(e, fn) { this.events[e] = (this.events[e]||[]).filter(f=>f!==fn); }
+  emit(e, ...args) { (this.events[e]||[]).forEach(fn=>fn(...args)); }
+}
+```
+
+---
+
+## 4️⃣8️⃣ Object.freeze vs seal
+
+- **freeze**: No add/delete/change properties.
+- **seal**: Can't add/delete, but can change existing values.
+
+---
+
+## 4️⃣9️⃣ Compose vs Pipe Functions
+
+```js
+const compose = (...fns) => x => fns.reduceRight((v,f)=>f(v), x);
+const pipe = (...fns) => x => fns.reduce((v,f)=>f(v), x);
+```
+
+---
+
+## 5️⃣0️⃣ Arguments Object Mutation
+
+```js
+function foo(a) { arguments[0]=99; return a; }
+foo(1); // 99 (non-strict); 1 (strict mode)
+```
+
+---
+
+## 5️⃣1️⃣ IIFE & Closure Output
+
+```js
+var x = 1;
+(function() {
+  var x = 2;
+  (function() {
+    console.log(x); // 2
+  })();
+})();
+```
+
+---
+
+## 5️⃣2️⃣ Polyfill for Array.flatMap
+
+```js
+Array.prototype.myFlatMap = function(cb, thisArg) {
+  return this.reduce((a, v, i) => a.concat(cb.call(thisArg, v, i, this)), []);
+};
+```
+
+---
+
+## 5️⃣3️⃣ Object Destructuring Defaults
+
+```js
+const {a=1, b=2} = {a:3};
+console.log(a, b); // 3 2
+```
+
+---
+
+## 5️⃣4️⃣ Clone DOM Node with Events
+
+```js
+function cloneWithEvents(node) {
+  const clone = node.cloneNode(true);
+  // Events are not cloned by default; need to reattach manually
+  // Can wrap addEventListener to record, then re-apply on clone
+  return clone;
+}
+```
+
+---
+
+## 5️⃣5️⃣ Function length property with defaults
+
+```js
+function f(a,b=1,c) {}
+console.log(f.length); // 1 (only before first default)
+```
+
+---
+
+## 5️⃣6️⃣ Polyfill for Promise.allSettled
+
+```js
+Promise.myAllSettled = function(proms) {
+  return Promise.all(proms.map(p =>
+    Promise.resolve(p).then(
+      v => ({status:'fulfilled', value:v}),
+      e => ({status:'rejected', reason:e})
+    )
+  ));
+};
+```
+
+---
+
+## 5️⃣7️⃣ Implicit Coercion Outputs ({}+[] etc)
+
+```js
+console.log({} + []); // "[object Object]"
+console.log([] + {}); // "[object Object]"
+console.log([] + []); // ""
+console.log({} + {}); // "[object Object][object Object]"
+```
+
+---
+
+## 5️⃣8️⃣ Retry Function Implementation
+
+```js
+function retry(fn, times) {
+  return (...args) => new Promise((res, rej) => {
+    function attempt(n) {
+      fn(...args).then(res, err => n>1 ? attempt(n-1) : rej(err));
+    }
+    attempt(times);
+  });
+}
+```
+
+---
+
+## 5️⃣9️⃣ Delete Operator Behavior
+
+```js
+const obj = { a: 1 };
+delete obj.a; // true; obj = {}
+const arr = [1,2];
+delete arr[0]; // true; arr=[,2]
+```
+
+---
+
+## 6️⃣0️⃣ Lazy Function with Currying
+
+```js
+function lazyAdd(a) {
+  return function(b) {
+    if (b === undefined) return a;
+    return lazyAdd(a + b);
+  }
+}
+lazyAdd(1)(2)(3)(); // 6
+```
+
+---
+
+## 6️⃣1️⃣ Async/Await with setTimeout Execution Order
+
+```js
+async function f() {
+  await 1;
+  setTimeout(()=>console.log(2),0);
+  console.log(3);
+}
+f();
+console.log(4);
+// Output: 4,3,2
+```
+
+---
+
+## 6️⃣2️⃣ Polyfill Function.prototype.defer
+
+```js
+Function.prototype.defer = function(ms) {
+  setTimeout(this, ms);
+};
+function f() { alert("hi"); }
+f.defer(1000); // alerts after 1s
+```
+
+---
+
+## 6️⃣3️⃣ Spread vs Object.assign Shallow Copy
+
+```js
+let o = {a:1}, o2={...o}, o3=Object.assign({},o);
+```
+
+---
+
+## 6️⃣4️⃣ Polyfill Array.some
+
+```js
+Array.prototype.mySome = function(cb, thisArg) {
+  for(let i=0;i<this.length;i++)
+    if(cb.call(thisArg, this[i], i, this)) return true;
+  return false;
+};
+```
+
+---
+
+## 6️⃣5️⃣ Optional chaining + Nullish Coalescing Example
+
+```js
+const obj = { a: { b: 2 } };
+console.log(obj?.a?.b ?? 42); // 2
+console.log(obj?.x?.y ?? 42); // 42
+```
+
+---
+
+## 6️⃣6️⃣ LRU Cache Implementation
+
+```js
+class LRUCache {
+  constructor(cap) { this.cap=cap; this.map=new Map(); }
+  get(k) {
+    if(!this.map.has(k)) return -1;
+    let v=this.map.get(k);
+    this.map.delete(k); this.map.set(k,v);
+    return v;
+  }
+  put(k,v) {
+    if(this.map.has(k)) this.map.delete(k);
+    this.map.set(k,v);
+    if(this.map.size>this.cap) this.map.delete(this.map.keys().next().value);
+  }
+}
+```
+
+---
+
+## 6️⃣7️⃣ Array Holes Behavior
+
+```js
+[,,,].length // 3
+[1,,3].map(x=>1) // [1, , 1]
+```
+
+---
+
+## 6️⃣8️⃣ Debounce with Immediate Option
+
+```js
+function debounce(fn, wait, immediate) {
+  let timeout;
+  return function(...args) {
+    const callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(()=>{timeout=null; if(!immediate) fn.apply(this,args);}, wait);
+    if(callNow) fn.apply(this,args);
+  }
+}
+```
+
+---
+
+## 6️⃣9️⃣ Class Field vs Prototype property
+
+```js
+class A {
+  x = 1; // Class field, per-instance
+  method() {} // Prototype
+}
+```
+
+---
+
+## 7️⃣0️⃣ Polyfill for new operator
+
+```js
+function myNew(fn, ...args) {
+  const obj = Object.create(fn.prototype);
+  const res = fn.apply(obj, args);
+  return res && typeof res=="object" ? res : obj;
+}
+```
+
+---
+
+## 7️⃣1️⃣ Promise Chain with Error Handling Output
+
+```js
+Promise.resolve().then(()=>{throw 'err'}).catch(e=>console.log(e)).then(()=>console.log('done'));
+// Output: 'err', 'done'
+```
+
+---
+
+## 7️⃣2️⃣ Polyfill Array.every
+
+```js
+Array.prototype.myEvery = function(cb, thisArg) {
+  for(let i=0;i<this.length;i++)
+    if(!cb.call(thisArg, this[i], i, this)) return false;
+  return true;
+}
+```
+
+---
+
+## 7️⃣3️⃣ Function Overloading Simulation
+
+```js
+function fn() {
+  if (arguments.length === 1) { /* ... */ }
+  if (arguments.length === 2) { /* ... */ }
+}
+```
+
+---
+
+## 7️⃣4️⃣ JSON.stringify (basic) Implementation
+
+```js
+function stringify(obj) {
+  if(obj===null) return 'null';
+  if(typeof obj==='string') return `"${obj}"`;
+  if(typeof obj==='number'||typeof obj==='boolean') return String(obj);
+  if(Array.isArray(obj)) return `[${obj.map(stringify).join(',')}]`;
+  if(typeof obj==='object') return `{${Object.keys(obj).map(k=>`"${k}":${stringify(obj[k])}`).join(',')}}`;
+}
+```
+
+---
+
+## 7️⃣5️⃣ Prototype vs Instance property Output
+
+```js
+function A() {}
+A.prototype.x = 1;
+const a = new A();
+a.x = 2;
+console.log(a.x); // 2
+console.log(a.__proto__.x); // 1
+```
+
+---
+
+## 7️⃣6️⃣ Polyfill for instanceof
+
+```js
+function myInstanceof(obj, fn) {
+  let proto = Object.getPrototypeOf(obj);
+  while(proto) {
+    if(proto === fn.prototype) return true;
+    proto = Object.getPrototypeOf(proto);
+  }
+  return false;
+}
+```
+
+---
+
+## 7️⃣7️⃣ Symbol Keys in Objects
+
+```js
+const s = Symbol('a');
+const o = {[s]:1};
+console.log(Object.keys(o)); // []
+console.log(Object.getOwnPropertySymbols(o)); // [Symbol(a)]
+```
+
+---
+
+## 7️⃣8️⃣ Scheduler Implementation
+
+```js
+class Scheduler {
+  constructor(limit=2) { this.limit=limit; this.running=0; this.queue=[]; }
+  add(fn) {
+    return new Promise(res=>{
+      const task = ()=>fn().then(res).finally(()=>{this.running--;this.next();});
+      this.queue.push(task); this.next();
+    });
+  }
+  next() {
+    if(this.running>=this.limit||!this.queue.length) return;
+    this.running++; this.queue.shift()();
+  }
+}
+```
+
+---
+
+## 7️⃣9️⃣ Tagged Template Literals Behavior
+
+```js
+function tag(strings, ...values) {
+  return strings[0] + values.map((v,i)=>v+strings[i+1]).join('');
+}
+tag`a${1}b${2}c` // "a1b2c"
+```
+
+---
+
+## 8️⃣0️⃣ Polyfill Object.create
+
+```js
+function myCreate(proto) {
+  function F() {}
+  F.prototype = proto;
+  return new F();
+}
+```
+
+---
+
+## 8️⃣1️⃣ Async/Await with Multiple Awaits Order
+
+```js
+async function f() {
+  console.log(1);
+  await null;
+  console.log(2);
+  await null;
+  console.log(3);
+}
+f();
+console.log(4);
+// Output: 1,4,2,3
+```
+
+---
+
+## 8️⃣2️⃣ Polyfill setInterval using setTimeout
+
+```js
+function mySetInterval(fn, delay) {
+  let timer;
+  function tick() {
+    fn();
+    timer = setTimeout(tick, delay);
+  }
+  tick();
+  return { clear: () => clearTimeout(timer) };
+}
+```
+
+---
+
+## 8️⃣3️⃣ Array sort lexicographic behavior
+
+```js
+[1, 2, 10, 5].sort(); // [1,10,2,5]
+```
+
+---
+
+## 8️⃣4️⃣ Async Pipe Function
+
+```js
+const asyncPipe = (...fns) => x => fns.reduce((p, f) => p.then(f), Promise.resolve(x));
+```
+
+---
+
+## 8️⃣5️⃣ typeof null vs instanceof Object
+
+```js
+typeof null // 'object'
+null instanceof Object // false
+```
+
+---
+
+## 8️⃣6️⃣ Virtual DOM Diff (shallow)
+
+```js
+function diff(a, b) {
+  const changes = {};
+  for (let k in b) if (a[k] !== b[k]) changes[k] = [a[k], b[k]];
+  return changes;
+}
+```
+
+---
+
+## 8️⃣7️⃣ Eval Scope Example
+
+```js
+var a = 1;
+(function(){
+  var a = 2;
+  eval('console.log(a)');
+})(); // 2
+```
+
+---
+
+## 8️⃣8️⃣ Priority Queue Implementation
+
+```js
+class PQ {
+  constructor() { this.q=[]; }
+  insert(v,p) { this.q.push({v,p}); this.q.sort((a,b)=>a.p-b.p); }
+  extractMin() { return this.q.shift().v; }
+}
+```
+
+---
+
+## 8️⃣9️⃣ Async Constructor Example
+
+```js
+class Foo {
+  constructor() {
+    return (async () => {
+      this.val = await Promise.resolve(42);
+      return this;
+    })();
+  }
+}
+(async () => { const f = await new Foo(); console.log(f.val); })();
+```
+
+---
+
+## 9️⃣0️⃣ Safe get(obj, path) like Lodash
+
+```js
+function get(obj, path, def) {
+  return path.split('.').reduce((o,k) => (o||{})[k], obj) ?? def;
+}
+get({a:{b:2}},'a.b'); // 2
+```
+
+---
+
+## 9️⃣1️⃣ Destructuring with Rest Output
+
+```js
+const [a, ...rest] = [1,2,3];
+console.log(a, rest); // 1 [2,3]
+```
+
+---
+
+## 9️⃣2️⃣ Polyfill for Promise.any
+
+```js
+Promise.myAny = function(proms) {
+  let errs = [], n = 0;
+  return new Promise((res, rej) => {
+    proms.forEach((p,i) => Promise.resolve(p).then(res, e => {
+      errs[i]=e; n++;
+      if (n===proms.length) rej(new AggregateError(errs));
+    }));
+  });
+};
+```
+
+---
+
+## 9️⃣3️⃣ Async/Await Error Handling with try/catch
+
+```js
+async function f() {
+  try { await Promise.reject('err'); }
+  catch(e) { console.log('caught', e); }
+}
+```
+
+---
+
+## 9️⃣4️⃣ Deep Clone with Circular References
+
+```js
+function deepClone(obj, map=new WeakMap()) {
+  if(obj==null||typeof obj!=='object') return obj;
+  if(map.has(obj)) return map.get(obj);
+  const res = Array.isArray(obj)?[]:{};
+  map.set(obj,res);
+  for(let k in obj) res[k]=deepClone(obj[k], map);
+  return res;
+}
+```
+
+---
+
+## 9️⃣5️⃣ Object.defineProperty writable false Example
+
+```js
+const o = {};
+Object.defineProperty(o, 'x', { value: 1, writable: false });
+o.x = 2;
+console.log(o.x); // 1
+```
+
+---
+
+## 9️⃣6️⃣ Task Runner with Concurrency Limit
+
+See #78 Scheduler.
+
+---
+
+## 9️⃣7️⃣ Tricky Assignment (a.x = a = {...})
+
+```js
+var a = {x:1};
+a.x = a = {y:2};
+console.log(a); // {y:2}
+```
+
+---
+
+## 9️⃣8️⃣ Polyfill Array.isArray
+
+```js
+Array.myIsArray = function(a) {
+  return Object.prototype.toString.call(a)==='[object Array]';
+}
+```
+
+---
+
+## 9️⃣9️⃣ with Statement Output
+
+```js
+var a = 1;
+with ({a:2}) { console.log(a); } // 2
+```
+
+---
+
+## 🔟0️⃣0️⃣ Observable Implementation
+
+```js
+class Observable {
+  constructor(sub) { this._sub = sub; }
+  subscribe(obs) { return this._sub(obs); }
+}
+const obs = new Observable(obs => {
+  obs.next(1); obs.next(2); obs.complete();
+});
+obs.subscribe({ next: x=>console.log(x), complete: ()=>console.log('done') });
+```
+
+---
+
+# End of Interview Q&A
 ---
