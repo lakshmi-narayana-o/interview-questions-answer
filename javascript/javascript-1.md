@@ -1,6 +1,7 @@
 
-# this: this keyword is refers to show browser window object and nodejs compiter it show global object. it used for current object as a constructor to assign value of object properies
+### Simple questions and answer
 ***
+- this: this keyword is refers to show browser window object and nodejs compiter it show global object. it used for current object as a constructor to assign value of object properies
 - null: Null is used to represent an intentional absence of any object value
 - undefined: indicates a variable is declared but not assigned a value
 - call, app, bind are methods in javascript that allow to manipulate the THIS keyword within function
