@@ -1,6 +1,6 @@
 
 # this: this keyword is refers to show browser window object and nodejs compiter it show global object. it used for current object as a constructor to assign value of object properies
-
+***
 null: Null is used to represent an intentional absence of any object value
 undefined: indicates a variable is declared but not assigned a value
 call, app, bind are methods in javascript that allow to manipulate the THIS keyword within function
@@ -71,7 +71,7 @@ abstraction: it hides complex implementation details and exposes only the necess
 Classes: A blueprint for creating objects. It defines properties and methods
 Object: An instance of a class.
 /////////////////////////
-
+***
 generate code make like questions, answers, output, and explanation.
 
 I'll create comprehensive interview-style questions with code examples based on your JavaScript concepts. Here's a structured set of questions, answers, outputs, and explanations:
