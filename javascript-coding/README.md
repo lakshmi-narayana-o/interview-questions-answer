@@ -1736,13 +1736,323 @@ console.log(separateAll("a%1b2c3@d*4"));
 
 ---
 
-### **Interview Tips**
-- Be ready to discuss how to modify this approach for Unicode letters, whitespace, or other categories.
-- Consider edge cases: empty string, single character, only special characters, etc.
-- Iterative approaches or using regex are alternatives for the same task.
+# JavaScript Interview Preparation: Recursion, Async, and String Set Operations
 
 ---
 
+## 6. Recursive Sum of Array
+
+### **Problem**
+Write a recursive function to sum all elements in an array.
+
+**Code:**
+```js
+const sum = (arr) => {
+  if (!arr.length) return 0;
+  return arr[0] + sum(arr.slice(1));
+};
+console.log(sum([1,2,3,4])); // 10
+```
+
+**Explanation:**
+- Base case: if the array is empty, return 0.
+- Recursive case: add the first element to the sum of the rest of the array.
+---
+
+## 7. Recursive Factorial
+
+### **Problem**
+Write a recursive function to calculate the factorial of a number.
+
+**Code:**
+```js
+const factorial = (n) => {
+  if (n <= 0) return 1;
+  return n * factorial(n - 1);
+};
+console.log(factorial(5)); // 120
+```
+
+**Explanation:**
+- Base case: factorial of 0 is 1.
+- Recursive case: n * factorial(n-1).
+
+---
+
+## 8. Async/Await, Microtasks and Macrotasks
+
+### **Problem**
+What is the order of output and why?
+
+**Code:**
+```js
+async function test() {
+  console.log(1);
+  await Promise.resolve();
+  setTimeout(() => console.log(4));
+  console.log(2);
+}
+test();
+console.log(3);
+```
+
+**Output:**
+```
+1
+2
+3
+4
+```
+
+**Explanation:**
+- `console.log(1)` runs synchronously.
+- `await Promise.resolve()` yields, but the promise is already resolved, so execution continues after current synchronous code finishes.
+- `console.log(2)` runs in a microtask, after synchronous code but before macrotasks (like setTimeout).
+- `console.log(3)` is synchronous and runs immediately after `test()` is called.
+- `console.log(4)` is in a `setTimeout` (macrotask) and runs after all microtasks.
+
+---
+
+## 9. First Repeated Letter in a String
+
+**Code:**
+```js
+function findRepatedLetter(str) {
+  const set = new Set();
+  for (let ch of str) {
+    if (set.has(ch)) return ch;
+    set.add(ch);
+  }
+  return null;
+}
+console.log(findRepatedLetter('abbcdd')); // b
+```
+
+**Explanation:**
+- Iterate through the string.
+- If the set already contains the character, return it as the first repeated character.
+---
+
+## 10. Remove Duplicate Letters from a String
+
+**Code:**
+```js
+const removeDuplicationLetters = (str) => {
+  const set = new Set();
+  for (let ch of str) {
+    set.add(ch);
+  }
+  return [...set];
+};
+console.log(removeDuplicationLetters("abbcdd")); // [ 'a', 'b', 'c', 'd' ]
+```
+
+**Explanation:**
+- A set only keeps unique values; spreading the set returns the unique letters in order of first appearance.
+
+---
+
+## 11. Find All Repeated Letters in a String
+
+**Code:**
+```js
+const findRepatedLetters = (str) => {
+  const set = new Set();
+  const store = new Set();
+  for (let ch of str) {
+    if (set.has(ch)) {
+      store.add(ch);
+    } else {
+      set.add(ch);
+    }
+  }
+  return [...store];
+};
+console.log(findRepatedLetters("abbcdd")); // [ 'b', 'd' ]
+```
+
+**Explanation:**
+- The first set tracks seen characters.
+- The second set collects characters that are repeated.
+- The result is all repeated letters, with no duplicates.
+
+---
+
+# JavaScript Interview Preparation: Objects, Event Propagation, Delegation, and Default Actions
+
+---
+
+## 12. Shallow vs Deep Copy of Objects
+
+### **Shallow Copy**
+
+```js
+const original = { name: "Alice", details: { age: 25 } };
+const shallowCopy = { ...original };
+shallowCopy.details.age = 26;
+shallowCopy.name = "John";
+console.log(original); // { name: "Alice", details: { age: 26 } }
+```
+
+- `shallowCopy` is a new object, but `details` is still a reference to the same object in memory.
+- Mutating `shallowCopy.details.age` changes `original.details.age`!
+- Changing `shallowCopy.name` does NOT affect `original.name`, since it is a primitive.
+
+### **Deep Copy**
+
+```js
+const deepCopy = JSON.parse(JSON.stringify(original));
+deepCopy.details.age = 40;
+console.log(original); // { name: "Alice", details: { age: 26 } }
+```
+
+- `deepCopy` is a new object, with no shared references to nested objects.
+- Mutating `deepCopy.details.age` does NOT affect `original.details.age`.
+
+---
+
+## 13. Event Bubbling (Default Phase)
+
+**HTML:**
+```html
+<div id="parent" style="padding:20px; background:lightblue;">
+  Parent
+  <button id="child">Click Me</button>
+</div>
+```
+
+**JS:**
+```js
+document.getElementById("child").addEventListener("click", () => {
+  console.log("Child clicked");
+});
+document.getElementById("parent").addEventListener("click", () => {
+  console.log("Parent clicked");
+});
+document.body.addEventListener("click", () => {
+  console.log("Body clicked");
+});
+```
+
+**Clicking the button logs (in order):**
+```
+Child clicked
+Parent clicked
+Body clicked
+```
+- Child → Parent → Body (bubbling up the DOM tree).
+
+---
+
+## 14. Event Capturing
+
+**HTML:**
+```html
+<div id="parent" style="padding:20px; background:lightgreen;">
+  Parent
+  <button id="child">Click Me</button>
+</div>
+```
+
+**JS:**
+```js
+document.body.addEventListener("click", () => {
+  console.log("Body capturing");
+}, true);
+document.getElementById("parent").addEventListener("click", () => {
+  console.log("Parent capturing");
+}, true);
+document.getElementById("child").addEventListener("click", () => {
+  console.log("Child clicked");
+}, true);
+```
+
+**Clicking the button logs (in order):**
+```
+Body capturing
+Parent capturing
+Child clicked
+```
+- Because `true` is passed as the third argument, the listeners use the **capture phase** (down the tree).
+
+---
+
+## 15. Event Delegation Example
+
+```html
+<ul id="list">
+  <li>Apple</li>
+  <li>Banana</li>
+  <li>Orange</li>
+</ul>
+```
+```js
+document.getElementById("list").addEventListener("click", (e) => {
+  if (e.target.tagName === "LI") {
+    console.log("Clicked on:", e.target.innerText);
+  }
+});
+```
+
+- Attaches one event listener to the parent (`ul`) that handles clicks on all `li` children.
+- Efficient for dynamic lists and reduces the number of event listeners.
+
+---
+
+## 16. stopPropagation
+
+```html
+<div id="parent" style="padding:20px; background:lightblue;">
+  Parent
+  <button id="child">Click Me</button>
+</div>
+```
+```js
+document.getElementById("child").addEventListener("click", (e) => {
+  console.log("Child clicked");
+  e.stopPropagation();
+});
+document.getElementById("parent").addEventListener("click", () => {
+  console.log("Parent clicked");
+});
+```
+
+- Clicking the button only logs "Child clicked" — event does **not** bubble to parent.
+
+---
+
+## 17. stopImmediatePropagation
+
+```html
+<button id="btn">Click Me</button>
+```
+```js
+document.getElementById("btn").addEventListener("click", (e) => {
+  console.log("First listener");
+  e.stopImmediatePropagation();
+});
+document.getElementById("btn").addEventListener("click", () => {
+  console.log("Second listener"); // never runs
+});
+```
+- `stopImmediatePropagation` prevents all other listeners on the same element from running.
+
+---
+
+## 18. preventDefault
+
+```html
+<a href="https://google.com" id="link">Go to Google</a>
+```
+```js
+document.getElementById("link").addEventListener("click", (e) => {
+  e.preventDefault();
+  console.log("Default action prevented");
+});
+```
+- Prevents navigation to Google on click.
+
+---
 
 
 
