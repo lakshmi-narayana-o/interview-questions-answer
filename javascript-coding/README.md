@@ -1538,6 +1538,8 @@ Descending: gfedcba
 
 ---
 
+
+
 # JavaScript Interview: Arrays & Objects – Deduplication, Intersection, Merging
 
 ---
@@ -1626,6 +1628,131 @@ console.log(result3);
 ### **Explanation**
 - All methods merge keys. If a key exists in both, the value from `obj2` is used.
 - `Object.assign()` and spread syntax `...` are concise, modern approaches.
+
+---
+
+# JavaScript Interview Preparation: Questions, Code Snippets, Outputs & Explanations
+
+---
+
+## 4. Separate Numbers and Alphabets in a String (Recursive Approach)
+
+### **Problem**
+Given a string containing both alphabets and digits, write a function to separate the digits and alphabets, preserving their order.
+
+---
+
+### **Code Snippet**
+
+```js
+const seperateNumAlpha = (s, num = "", alpha = "") => {
+  if (s.length <= 0) return [num, alpha]
+  
+  const ch = s[0]
+  if (ch >= '0' && ch <= '9') {
+    return seperateNumAlpha(s.slice(1), num + ch, alpha)
+  } else {
+    return seperateNumAlpha(s.slice(1), num, alpha + ch)
+  }
+}
+
+console.log(seperateNumAlpha('a1b2c3d4'))
+```
+
+---
+
+### **Output**
+
+```
+[ '1234', 'abcd' ]
+```
+
+---
+
+### **Explanation**
+
+- The function uses recursion and accumulators for numbers (`num`) and alphabets (`alpha`).
+- It checks the first character of the string (`ch`):
+  - If `ch` is between `'0'` and `'9'`, it’s a digit, so it’s appended to `num`.
+  - Otherwise, it’s assumed to be an alphabetic character and appended to `alpha`.
+- The function recurses on the remainder of the string (`s.slice(1)`), carrying forward the accumulators.
+- The base case: when the input string is empty (`s.length <= 0`), it returns an array `[num, alpha]` containing the separated numbers and alphabets in order of appearance.
+
+---
+
+# JavaScript Interview Preparation: Separate Numbers, Alphabets, and Special Characters from a String (Recursive)
+
+---
+
+## 5. Separate Numbers, Alphabets, and Special Characters from a String
+
+### **Problem**
+Write a function that takes a string and returns three strings:  
+1. All numbers (in order)  
+2. All alphabets (in order)  
+3. All special characters (in order)  
+
+---
+
+### **Code Snippet**
+
+```js
+const separateAll = (s, num = "", alpha = "", special = "") => {
+  if (s.length === 0) return [num, alpha, special];
+
+  const ch = s[0];
+  if (ch >= "0" && ch <= "9") {
+    return separateAll(s.slice(1), num + ch, alpha, special);
+  } else if ((ch >= "a" && ch <= "z") || (ch >= "A" && ch <= "Z")) {
+    return separateAll(s.slice(1), num, alpha + ch, special);
+  } else {
+    return separateAll(s.slice(1), num, alpha, special + ch);
+  }
+};
+
+console.log(separateAll("a%1b2c3@d*4"));
+// Output: ["1234", "abcd", "%@*"]
+```
+
+---
+
+### **Output**
+
+```
+[ '1234', 'abcd', '%@*' ]
+```
+
+---
+
+### **Explanation**
+
+- The function uses recursion and three accumulators: `num` for numbers, `alpha` for alphabets, and `special` for special characters.
+- For each character in the input string:
+  - If the character is a digit (`'0'` to `'9'`), it's appended to `num`.
+  - If it's an alphabet (either lowercase or uppercase), it's appended to `alpha`.
+  - Otherwise, it's considered a special character and appended to `special`.
+- The function processes one character at a time, recursing on the remainder of the string.
+- The base case is when the string is empty; the function returns the three accumulated strings as an array.
+
+---
+
+### **Interview Tips**
+- Be ready to discuss how to modify this approach for Unicode letters, whitespace, or other categories.
+- Consider edge cases: empty string, single character, only special characters, etc.
+- Iterative approaches or using regex are alternatives for the same task.
+
+---
+
+
+
+
+
+**Example with Special Characters:**
+
+```js
+console.log(seperateNumAlpha('A1!b2@c3#')); // [ '123', 'Abc!@#' ]
+```
+*(In the current implementation, non-digit characters are grouped with alphabets.)*
 
 ---
 
