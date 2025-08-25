@@ -1451,3 +1451,417 @@ Cache hit
 - Memoization caches function results to avoid recomputation
 - Virtual scrolling renders only visible items for performance
 - Debounce/throttle control function execution frequency
+
+# JavaScript Interview Preparation: Questions, Code Snippets, Outputs & Explanations
+
+---
+
+## 1. Find Missing Values in a Range
+
+### Problem
+Given a list of numbers, find all numbers missing in the sequence between the minimum and maximum value.
+
+### Code Snippet
+
+```js
+const findMissedValues = (...numbers) => {
+    const maxNum = Math.max(...numbers)
+    const minNum = Math.min(...numbers)
+
+    const result = [];
+    for (let i = minNum; i < maxNum; i++) {
+        if (numbers.indexOf(i) < 0) {
+            result.push(i)
+        }
+    }
+    return result;
+}
+
+console.log(findMissedValues(1, 2, 4, 7, 13));
+```
+
+### Output
+
+```
+[3, 5, 6, 8, 9, 10, 11, 12]
+```
+
+### Explanation
+
+- `Math.max(...numbers)` and `Math.min(...numbers)` find the range.
+- The loop checks each number between min and max.
+- If a number is not present in the input array, it's pushed to `result`.
+- The function returns all missing numbers in the sequence.
+
+---
+
+## 2. Sort Alphabets in a String
+
+### Problem
+Given a string, return its alphabets sorted in ascending and descending order.
+
+### Code Snippet
+
+```js
+function sortAlphabets(str) {
+  const asc = str.split("").sort((a, b) => a.localeCompare(b)).join("");
+  const desc = str.split("").sort((a, b) => b.localeCompare(a)).join("");
+
+  return {
+    ascending: asc,
+    descending: desc,
+  };
+}
+
+// Example usage
+const input = "fbacged";
+const result = sortAlphabets(input);
+console.log(`Input: ${input}`);
+console.log(`Ascending: ${result.ascending}`);
+console.log(`Descending: ${result.descending}`);
+```
+
+### Output
+
+```
+Input: fbacged
+Ascending: abcdefg
+Descending: gfedcba
+```
+
+### Explanation
+
+- `str.split("")` turns the string into an array of characters.
+- `.sort((a, b) => a.localeCompare(b))` sorts alphabetically (ascending).
+- `.sort((a, b) => b.localeCompare(a))` sorts in reverse (descending).
+- `.join("")` converts the array back to a string.
+
+---
+
+# JavaScript Interview: Arrays & Objects – Deduplication, Intersection, Merging
+
+---
+
+## 1. Remove Duplicates from an Array and Sort
+
+### **Problem**
+Given an array with duplicate numbers, return a sorted array with unique values.
+
+### **Code Snippet**
+```js
+const duplicates = [3, 4, 3, 1, 2, 3, 5];
+const results = duplicates
+    .filter((item, index) => duplicates.indexOf(item) === index)
+    .sort((a, b) => a - b);
+console.log(results); // [1, 2, 3, 4, 5]
+```
+
+**Alternative:**  
+You can also use a `Set`:
+```js
+const results = [...new Set(duplicates)].sort((a, b) => a - b);
+```
+
+### **Explanation**
+- `.filter((item, index) => duplicates.indexOf(item) === index)` keeps only the first occurrence of each item.
+- `.sort((a, b) => a - b)` sorts the array in ascending order.
+
+---
+
+## 2. Find Common Key-Value Pairs in Two Objects
+
+### **Problem**
+Given two objects, find key-value pairs that have the same key and value in both.
+
+### **Code Snippet**
+```js
+const obj1 = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+const obj2 = { a: 4, c: 5, d: 4, e: 5, f: 6 };
+
+const result = {};
+for (let obj in obj2) {
+    if (obj1[obj] === obj2[obj]) {
+        result[obj] = obj1[obj];
+    }
+}
+console.log(result); // { d: 4, e: 5 }
+```
+
+### **Explanation**
+- Loop through keys in `obj2`.
+- If `obj1` has the same value for the key, add it to `result`.
+
+---
+
+## 3. Merge Two Objects
+
+### **Problem**
+Merge two objects; values from the second object override those from the first in case of conflict.
+
+### **Code Snippet**
+```js
+const obj1 = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+const obj2 = { a: 4, c: 5, d: 4, e: 5, f: 6 };
+
+// Using for...in
+const result = {};
+for (let key in obj1) {
+  result[key] = obj1[key];
+}
+for (let key in obj2) {
+  result[key] = obj2[key];
+}
+console.log(result);
+// { a: 4, b: 2, c: 5, d: 4, e: 5, f: 6 }
+
+// Using Object.assign
+const result2 = Object.assign({}, obj1, obj2);
+console.log(result2);
+
+// Using spread operator
+const result3 = { ...obj1, ...obj2 };
+console.log(result3);
+```
+
+### **Explanation**
+- All methods merge keys. If a key exists in both, the value from `obj2` is used.
+- `Object.assign()` and spread syntax `...` are concise, modern approaches.
+
+---
+
+# JavaScript Equality, Type Coercion, and Comparison Operators
+
+Understanding the difference between `==` (loose equality) and `===` (strict equality), as well as how JavaScript coerces types during comparison, is crucial for interviews.
+
+---
+
+## 1. Strict Equality (`===`)
+
+- Compares both **type** and **value**.
+- No type conversion is done.
+
+```js
+console.log('' === true);     // false   (string vs boolean)
+console.log(0 === true);      // false   (number vs boolean)
+console.log('' === false);    // false   (string vs boolean)
+console.log(0 === false);     // false   (number vs boolean)
+```
+
+---
+
+## 2. Loose Equality (`==`)
+
+- Performs **type coercion** if necessary before comparing values.
+
+```js
+console.log('' == true);      // false   ('' coerces to 0, true to 1, 0 != 1)
+console.log(0 == true);       // false   (0 != 1)
+console.log('' == false);     // true    ('' coerces to 0, false to 0, 0 == 0)
+console.log(0 == false);      // true    (0 == 0)
+```
+
+---
+
+## 3. Comparison Operators with `null`
+
+```js
+console.log(null <= 0);       // true
+console.log(null >= 0);       // true
+```
+
+- With comparison operators (`<=`, `>=`), `null` is coerced to `0`:
+    - `null <= 0` → `0 <= 0` → `true`
+    - `null >= 0` → `0 >= 0` → `true`
+
+---
+
+## 4. Comparison Operators with Numbers
+
+```js
+console.log(0 <= 0);          // true
+console.log(0 >= 0);          // true
+```
+
+- Obvious numeric comparison.
+
+---
+
+## 5. `NaN` Equality
+
+```js
+console.log(NaN === NaN);     // false
+```
+- `NaN` (Not-a-Number) is **not** equal to anything, including itself.
+
+---
+
+### **Summary Table**
+
+| Expression         | Result | Explanation                                      |
+|--------------------|--------|--------------------------------------------------|
+| `'' === true`      | false  | Type mismatch (string vs boolean)                |
+| `0 === true`       | false  | Type mismatch (number vs boolean)                |
+| `'' === false`     | false  | Type mismatch                                    |
+| `0 === false`      | false  | Type mismatch                                    |
+| `'' == true`       | false  | `'' → 0`, `true → 1`, `0 != 1`                   |
+| `0 == true`        | false  | `0 != 1`                                         |
+| `'' == false`      | true   | `'' → 0`, `false → 0`, `0 == 0`                  |
+| `0 == false`       | true   | `0 == 0`                                         |
+| `null <= 0`        | true   | `null → 0`, `0 <= 0`                             |
+| `null >= 0`        | true   | `null → 0`, `0 >= 0`                             |
+| `NaN === NaN`      | false  | `NaN` is never equal to itself                   |
+
+---
+
+**Tip:**  
+Always use `===` for comparisons unless you explicitly want type coercion, and never compare anything to `NaN` using equality operators. Use `Number.isNaN(value)` instead.
+
+```js
+console.log(Number.isNaN(NaN)); // true
+```
+
+# JavaScript Tricky Questions: Type Coercion, Primitives vs Objects, and Operators
+
+---
+
+## 1. Type Coercion in Arithmetic and Concatenation
+
+```js
+console.log(true + 1);     // 2
+console.log(true + "1");   // "true1"
+```
+
+- `true + 1`: `true` is coerced to `1`, so `1 + 1 = 2`.
+- `true + "1"`: `true` is coerced to `"true"`, `"true" + "1" = "true1"` (string concatenation).
+
+---
+
+## 2. Primitives Cannot Have Properties
+
+```js
+const str = "hello";
+str.data = "val";
+console.log(str.data); // undefined
+```
+
+- Primitive strings are **not objects**; you cannot set arbitrary properties on them.
+
+---
+
+## 3. String Primitives vs String Objects
+
+```js
+const s1 = "hello";
+const s2 = new String("hello");
+console.log(s1 == s2);      // true
+console.log(s1 === s2);     // false
+console.log(s1, s2);        // "hello" [String: 'hello']
+```
+
+- `==` does type coercion: compares primitive and object by value.
+- `===` checks type and value: string primitive is not equal to String object.
+
+---
+
+## 4. Boolean Casting of Objects/Arrays
+
+```js
+console.log(Boolean({}));                 // true
+console.log(Boolean([]));                 // true
+console.log(Boolean(""));                 // false
+console.log(Boolean(new Boolean(false))); // true
+console.log(Boolean(new Boolean(true)));  // true
+```
+
+- All objects (including empty ones) are truthy.
+- `new Boolean(false)` is an object, so it's truthy.
+
+---
+
+## 5. Weird Equality Cases
+
+```js
+console.log([] == ![]);   // true
+console.log("" == []);    // true
+console.log("" == ![]);   // true
+console.log(!{} == []);   // true
+console.log([] == 0);     // true
+console.log([0] == [0]);  // false
+```
+
+**Explanations:**
+- `[] == ![]`  
+  - `![]` is `false`; `[] == false`; `[]` coerces to `""`; `"" == false` → `0 == 0` → `true`.
+- `"" == []`  
+  - `[]` coerces to `""`; `"" == ""` → `true`.
+- `"" == ![]`  
+  - `![]` is `false`; `"" == false` → `0 == 0` → `true`.
+- `!{} == []`  
+  - `!{}` is `false`; `false == []` → `0 == ""` → `0 == 0` → `true`.
+- `[] == 0`  
+  - `[]` coerces to `""`, then `"" == 0` → `0 == 0` → `true`.
+- `[0] == [0]`  
+  - Different object references; always `false`.
+
+---
+
+## 6. Arithmetic with Strings and Booleans
+
+```js
+let x = "5";
+let y = true;
+console.log(x - y); // 4
+```
+- `"5" - true` → `5 - 1` → `4` (subtraction triggers number coercion).
+
+---
+
+## 7. Logical AND (`&&`) and OR (`||`)
+
+```js
+console.log(5 && 1); // 1
+console.log(5 || 1); // 5
+```
+- `&&` returns the last truthy value if all are truthy, otherwise the first falsy one.
+- `||` returns the first truthy value.
+
+---
+
+## 8. `typeof` Operator
+
+```js
+console.log(typeof null);           // "object"
+console.log(typeof undefined);      // "undefined"
+console.log(typeof NaN);            // "number"
+console.log(typeof function(){});   // "function"
+```
+- `typeof null` is a long-standing JS quirk.
+- `typeof NaN` is `"number"` because NaN is a special numeric value.
+
+---
+
+## 9. Number Primitives vs Number Objects
+
+```js
+let x = 123;
+let y = new Number(123);
+console.log(x === y); // false
+console.log(x == y);  // true
+```
+- `===` compares type: primitive vs object.
+- `==` coerces object to primitive, then compares.
+
+---
+
+## 10. Unary Plus (`+`) for Type Conversion
+
+```js
+console.log(+true);    // 1
+console.log(+false);   // 0
+console.log(+"123");   // 123
+console.log(+null);    // 0
+```
+- The unary plus converts its operand to a number.
+
+---
+
